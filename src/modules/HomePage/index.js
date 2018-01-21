@@ -1,10 +1,13 @@
 import React from 'react'
+import TrackList from './components/TrackList'
 
 import styles from './styles/HomePage.sass'
 
 const HomePage = () => {
     return (
-        <div className={styles.title}>123</div>
+        <div>
+            123
+        </div>
     )
 }
 
