@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Col, Form, FormGroup, FormControl, Checkbox, Button, Modal } from 'react-bootstrap'
+import { Col, Form, FormGroup, FormControl, Button, Well } from 'react-bootstrap'
+import FontAwesome from 'react-fontawesome'
 
 import { fetchLoginRequest } from '../action'
 
@@ -11,12 +12,9 @@ class LoginPage extends React.Component {
         password: '',
     }
 
-    componentWillUpdate() {
-        console.log('componentWillUpdate')
-    }
-
-    componentWillReceiveProps() {
-        const { token, history } = this.props
+    componentWillReceiveProps(nextProps) {
+        const { token } = nextProps
+        const { history } = this.props
 
         if (token) {
             history.push('/')
@@ -35,56 +33,75 @@ class LoginPage extends React.Component {
         const { username, password } = this.state
         const { dispatch } = this.props
 
-        console.log(this.props)
-
         dispatch(fetchLoginRequest({ username, password }))
     }
 
     render() {
+        const { fetching } = this.props
+
+        console.log(fetching)
+
+        const btn = fetching ? (
+            <Button
+                type="button"
+                disabled={true}>
+                <FontAwesome
+                    name="spinner"
+                    spin={true} />
+            </Button>
+        ) : (
+            <Button
+                type="button"
+                onClick={this.handleLogIn}>Log In</Button>
+        )
+
         return (
-            <Modal show={true}>
-                <Modal.Body>
-                    <Form horizontal>
-                        <FormGroup controlId="username">
-                            <Col sm={2}>
-                                Login
-                            </Col>
-                            <Col sm={10}>
-                                <FormControl
-                                    type="text"
-                                    placeholder="Login"
-                                    onChange={this.handleChangeField.bind(this, 'username')} />
-                            </Col>
-                        </FormGroup>
+            <Well>
+                <Form horizontal>
+                    <FormGroup controlId="username">
+                        <Col
+                            sm={2}
+                            smOffset={3}>
+                            Login
+                        </Col>
+                        <Col sm={4}>
+                            <FormControl
+                                type="text"
+                                placeholder="Login"
+                                onChange={this.handleChangeField.bind(this, 'username')} />
+                        </Col>
+                    </FormGroup>
 
-                        <FormGroup controlId="password">
-                            <Col sm={2}>
-                                Password
-                            </Col>
-                            <Col sm={10}>
-                                <FormControl
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={this.handleChangeField.bind(this, 'password')} />
-                            </Col>
-                        </FormGroup>
+                    <FormGroup controlId="password">
+                        <Col
+                            sm={2}
+                            smOffset={3}>
+                            Password
+                        </Col>
+                        <Col sm={4}>
+                            <FormControl
+                                type="password"
+                                placeholder="Password"
+                                onChange={this.handleChangeField.bind(this, 'password')} />
+                        </Col>
+                    </FormGroup>
 
-                        <FormGroup>
-                            <Col smOffset={2} sm={10}>
-                                <Button
-                                    type="button"
-                                    onClick={this.handleLogIn}>Log In</Button>
-                            </Col>
-                        </FormGroup>
-                    </Form>
-                </Modal.Body>
-            </Modal>
+                    <FormGroup>
+                        <Col
+                            smOffset={5}
+                            sm={4}>
+                            {btn}
+                        </Col>
+                    </FormGroup>
+                </Form>
+            </Well>
         )
     }
 }
 
 const mapStateToProps = (state) => {
     return {
+        fetching: state.auth.fetching,
         token: state.auth.token,
     }
 }

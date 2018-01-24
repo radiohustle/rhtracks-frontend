@@ -1,0 +1,96 @@
+import React from 'react'
+
+import { Modal } from 'react-bootstrap'
+
+class TypeEditor extends React.Component {
+    constructor (props) {
+        console.log('props', props)
+        super(props)
+        this.updateData = this.updateData.bind(this)
+        this.state = {
+            open: true,
+            classic: props.defaultValue.classic,
+            jnj: props.defaultValue.jnj,
+            beg: props.defaultValue.beg,
+        }
+    }
+
+    updateData () {
+        const { classic, jnj, beg } = this.state
+
+        this.props.onUpdate({
+            classic,
+            jnj,
+            beg,
+        })
+    }
+
+    close = () => {
+        this.setState({ open: false })
+        this.props.onUpdate(this.props.defaultValue)
+    }
+
+    render () {
+        const fadeIn = this.state.open ? 'in' : ''
+        const display = this.state.open ? 'block' : 'none'
+
+        const { classic, jnj, beg } = this.state
+
+        console.log(this.state)
+
+        return (
+            <div className={`modal fade ${fadeIn}`} id="myModal" role="dialog" style={{display}}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-body">
+                            <label>
+                                <input
+                                    className={`${this.props.editorClass || ''} editor edit-text`}
+                                    type="checkbox"
+                                    value="classic"
+                                    defaultChecked={classic}
+                                    style={{
+                                        verticalAlign: 'top',
+                                    }}
+                                    onChange={e => { this.setState({[e.currentTarget.value]: e.currentTarget.checked}) }} />
+                                {' '}Classic
+                            </label>
+                            <br />
+                            <label>
+                                <input
+                                    className={`${this.props.editorClass || ''} editor edit-text`}
+                                    type="checkbox"
+                                    value="jnj"
+                                    defaultChecked={jnj}
+                                    style={{
+                                        verticalAlign: 'top',
+                                    }}
+                                    onChange={e => { this.setState({[e.currentTarget.value]: e.currentTarget.checked}) }} />
+                                {' '}JnJ
+                            </label>
+                            <br />
+                            <label>
+                                <input
+                                    className={`${this.props.editorClass || ''} editor edit-text`}
+                                    type="checkbox"
+                                    value="beg"
+                                    defaultChecked={beg}
+                                    style={{
+                                        verticalAlign: 'top',
+                                    }}
+                                    onChange={e => { this.setState({[e.currentTarget.value]: e.currentTarget.checked}) }} />
+                                {' '}Beg
+                            </label>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-primary" onClick={this.updateData}>Save</button>
+                            <button type="button" className="btn btn-default" onClick={this.close}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+}
+
+export default TypeEditor

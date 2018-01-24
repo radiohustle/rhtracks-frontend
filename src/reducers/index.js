@@ -2,12 +2,12 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import authReducer from './authReducer'
-import tracksReducer from './tracksReducer'
+import playerReducer from './playerReducer'
 
 const rootReducer = combineReducers({
     routing: routerReducer,
     auth: authReducer,
-    tracks: tracksReducer,
+    player: playerReducer,
 })
 
 export default rootReducer
