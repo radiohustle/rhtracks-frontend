@@ -5,10 +5,8 @@ import { Switch, Redirect, Route } from 'react-router-dom'
 
 import { Grid } from 'react-bootstrap'
 
-import Layout from './common/Layout'
 import Dashboard from '../modules/Dashboard'
 import LoginPage from '../modules/Auth/components/LoginPage'
-import PageNotFound from './common/PageNotFound'
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless

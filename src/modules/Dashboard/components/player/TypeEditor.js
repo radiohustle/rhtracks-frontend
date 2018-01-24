@@ -1,10 +1,8 @@
 import React from 'react'
-
-import { Modal } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 class TypeEditor extends React.Component {
     constructor (props) {
-        console.log('props', props)
         super(props)
         this.updateData = this.updateData.bind(this)
         this.state = {
@@ -35,8 +33,6 @@ class TypeEditor extends React.Component {
         const display = this.state.open ? 'block' : 'none'
 
         const { classic, jnj, beg } = this.state
-
-        console.log(this.state)
 
         return (
             <div className={`modal fade ${fadeIn}`} id="myModal" role="dialog" style={{display}}>
@@ -91,6 +87,12 @@ class TypeEditor extends React.Component {
             </div>
         )
     }
+}
+
+TypeEditor.propTypes = {
+    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    onUpdate: PropTypes.func,
+    editorClass: PropTypes.string,
 }
 
 export default TypeEditor

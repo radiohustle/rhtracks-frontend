@@ -5,7 +5,7 @@ const initialState = {
     tracks: [],
 }
 
-const tracksReducer = (state, action) => {
+const tracksReducer = (state = initialState, action) => {
     if (action.type === FETCH_TRACKS_REQUEST) {
         return {
             ...state,
