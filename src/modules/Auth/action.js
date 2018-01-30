@@ -24,7 +24,13 @@ export const fetchLoginRequest = ({ username, password }) => {
             // },
             body: form
         })
-            .then(r => r.json())
+            .then(r => {
+                if (r.status !== 200) {
+                    throw r.statusText
+                }
+
+                return r.json()
+            })
             .then(res => dispatch({
                 type: FETCH_LOGIN_SUCCESS,
                 payload: res,

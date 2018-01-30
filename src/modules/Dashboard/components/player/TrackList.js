@@ -8,7 +8,7 @@ import FontAwesome from 'react-fontawesome'
 
 import TypeEditor from './TypeEditor'
 
-import { fetchTracksRequest } from '../../action'
+import { fetchTracksRequest, updateTrackRequest } from '../../action'
 
 const beforeSaveCell = (row, cellName, cellValue) => {
     if (cellName === 'bpm') {
@@ -22,6 +22,22 @@ const beforeSaveCell = (row, cellName, cellValue) => {
     }
 
     return true
+}
+
+const afterSaveCell = dispatch => {
+    return row => {
+        dispatch(
+            updateTrackRequest({
+                id: row.id,
+                name: row.name,
+                src: row.src,
+                bpm: row.bpm,
+                classic: row.type.classic ? 1 : 0,
+                jnj: row.type.jnj ? 1 : 0,
+                beg: row.type.beg ? 1 : 0,
+            })
+        )
+    }
 }
 
 const typeFormatter = (cell) => {
@@ -66,6 +82,7 @@ class TrackList extends React.Component {
         const {
             fetching,
             tracks,
+            dispatch,
         } = this.props
 
         if (fetching) {
@@ -83,11 +100,26 @@ class TrackList extends React.Component {
             mode: 'dbclick',
             blurToSave: true,
             beforeSaveCell,
+            afterSaveCell: afterSaveCell(dispatch),
         }
+
+        const data = tracks.map(track => {
+            return {
+                id: track.id,
+                name: track.name,
+                src: track.src,
+                bpm: track.bpm,
+                type: {
+                    classic: track.classic,
+                    jnj: track.jnj,
+                    beg: track.beg,
+                }
+            }
+        })
 
         return (
             <BootstrapTable
-                data={tracks}
+                data={data}
                 pagination={true}
                 exportCSV={true}
                 csvFileName="rh-player-tracks.csv"
@@ -101,6 +133,9 @@ class TrackList extends React.Component {
                     ID
                 </TableHeaderColumn>
                 <TableHeaderColumn dataField="name">
+                    name
+                </TableHeaderColumn>
+                <TableHeaderColumn dataField="src">
                     src
                 </TableHeaderColumn>
                 <TableHeaderColumn

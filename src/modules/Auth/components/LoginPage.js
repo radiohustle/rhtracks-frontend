@@ -37,9 +37,7 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        const { fetching } = this.props
-
-        console.log(fetching)
+        const { fetching, error } = this.props
 
         const btn = fetching ? (
             <Button
@@ -91,6 +89,8 @@ class LoginPage extends React.Component {
                             smOffset={5}
                             sm={4}>
                             {btn}
+                            <br />
+                            {error}
                         </Col>
                     </FormGroup>
                 </Form>
@@ -100,9 +100,18 @@ class LoginPage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+    const { auth } = state
+    const { fetching, error, token } = auth
+
+    if (error) {
+        return {
+            error,
+        }
+    }
+
     return {
-        fetching: state.auth.fetching,
-        token: state.auth.token,
+        fetching,
+        token,
     }
 }
 

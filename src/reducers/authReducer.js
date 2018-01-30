@@ -7,6 +7,7 @@ const getState = (token) => {
 
         return {
             fetching: false,
+            error: null,
             username: decodedData.username,
             token,
         }
