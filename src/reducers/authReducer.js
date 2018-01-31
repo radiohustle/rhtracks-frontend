@@ -11,10 +11,10 @@ const getState = (token) => {
             username: decodedData.username,
             token,
         }
-    } else {
-        return {
-            fetching: false,
-        }
+    }
+
+    return {
+        fetching: false,
     }
 }
 
@@ -48,7 +48,7 @@ const authReducer = (state = getState(sessionStorage.auth_token), action) => {
     }
 
     return {
-        ...state
+        ...state,
     }
 }
 

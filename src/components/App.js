@@ -1,6 +1,5 @@
 /* eslint-disable import/no-named-as-default */
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Switch, Redirect, Route } from 'react-router-dom'
 
 import { Grid } from 'react-bootstrap'
@@ -17,16 +16,19 @@ const authCheck = () => {
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={props => (
-        authCheck() ? (
-            <Component {...props}/>
-        ) : (
-            <Redirect to={{
-                pathname: '/login',
-                state: { from: props.location }
-            }}/>
-        )
-    )}/>
+    <Route
+        {...rest}
+        render={props => (
+            authCheck() ? (
+                <Component {...props} />
+            ) : (
+                <Redirect
+                    to={{
+                        pathname: '/login',
+                        state: { from: props.location },
+                    }} />
+            )
+        )} />
 )
 
 class App extends React.Component {
@@ -53,7 +55,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-    children: PropTypes.element
+
 }
 
 export default App

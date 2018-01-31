@@ -9,7 +9,7 @@ export const fetchLoginRequest = ({ username, password }) => {
             payload: {
                 username,
                 password,
-            }
+            },
         })
 
         const form = new FormData()
@@ -22,7 +22,7 @@ export const fetchLoginRequest = ({ username, password }) => {
             // headers: {
             //     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             // },
-            body: form
+            body: form,
         })
             .then(r => {
                 if (r.status !== 200) {

@@ -1,4 +1,9 @@
-import { FETCH_TRACKS_FAILED, FETCH_TRACKS_REQUEST, FETCH_TRACKS_SUCCESS } from '../modules/Dashboard/const'
+import {
+    FETCH_TRACKS_FAILED,
+    FETCH_TRACKS_REQUEST,
+    FETCH_TRACKS_SUCCESS,
+    FETCH_UPDATE_TRACK_SUCCESS,
+} from '../modules/Dashboard/const'
 
 const initialState = {
     fetching: false,
@@ -6,6 +11,8 @@ const initialState = {
 }
 
 const tracksReducer = (state = initialState, action) => {
+    // Track list
+
     if (action.type === FETCH_TRACKS_REQUEST) {
         return {
             ...state,
@@ -28,8 +35,16 @@ const tracksReducer = (state = initialState, action) => {
         }
     }
 
+    // Update track
+
+    if (action.type === FETCH_UPDATE_TRACK_SUCCESS) {
+        return {
+            ...state,
+        }
+    }
+
     return {
-        ...state
+        ...state,
     }
 }
 
