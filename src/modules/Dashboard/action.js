@@ -25,9 +25,9 @@ export const fetchTracksRequest = () => {
                             text: r.statusText,
                         },
                     })
-                } else {
-                    return r.json()
                 }
+
+                return r.json()
             })
             .then(res => dispatch({
                 type: FETCH_TRACKS_SUCCESS,
@@ -58,9 +58,9 @@ export const updateTrackRequest = (track) => {
                             text: r.statusText,
                         },
                     })
-                } else {
-                    return r.json()
                 }
+
+                return r.json()
             })
             .then(res => dispatch({
                 type: FETCH_UPDATE_TRACK_SUCCESS,
