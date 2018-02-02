@@ -26,7 +26,10 @@ export const fetchLoginRequest = ({ username, password }) => {
         })
             .then(r => {
                 if (r.status !== 200) {
-                    throw r.statusText
+                    throw ({
+                        code: r.status,
+                        message: r.statusText,
+                    })
                 }
 
                 return r.json()
