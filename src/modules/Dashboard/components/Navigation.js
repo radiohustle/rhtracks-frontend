@@ -1,13 +1,17 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
+import packageJson from '../../../../package.json'
+
 import {
+    Badge,
     Nav,
     NavItem,
     Navbar,
     NavDropdown,
-    MenuItem
+    MenuItem,
 } from 'react-bootstrap'
 
 import { LinkContainer } from 'react-router-bootstrap'
@@ -27,7 +31,7 @@ class Navigation extends React.Component {
         return (
             <Navbar collapseOnSelect={true}>
                 <Navbar.Header>
-                    <Navbar.Brand>Data RH</Navbar.Brand>
+                    <Navbar.Brand>Data RH <Badge>{packageJson.version}</Badge></Navbar.Brand>
                     <Navbar.Toggle />
                 </Navbar.Header>
                 <Navbar.Collapse>
@@ -53,6 +57,11 @@ class Navigation extends React.Component {
             </Navbar>
         )
     }
+}
+
+Navigation.propTypes = {
+    history: PropTypes.object,
+    username: PropTypes.string,
 }
 
 const mapStateToProps = (state) => {
