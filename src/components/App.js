@@ -1,11 +1,15 @@
-/* eslint-disable import/no-named-as-default */
+/* eslint-disable import/no-named-as-default,react/no-multi-comp,react/prefer-stateless-function */
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Switch, Redirect, Route } from 'react-router-dom'
+import { NotificationContainer } from 'react-notifications'
 
 import { Grid } from 'react-bootstrap'
 
 import Dashboard from '../modules/Dashboard'
 import LoginPage from '../modules/Auth/components/LoginPage'
+
+import 'react-notifications/lib/notifications.css'
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
@@ -31,6 +35,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         )} />
 )
 
+PrivateRoute.propTypes = {
+    component: PropTypes.element,
+    location: PropTypes.object,
+}
+
 class App extends React.Component {
     render() {
         return (
@@ -49,6 +58,7 @@ class App extends React.Component {
                             component={Dashboard} />
                     </Switch>
                 </Grid>
+                <NotificationContainer />
             </div>
         )
     }
