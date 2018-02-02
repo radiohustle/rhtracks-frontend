@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { Col, Form, FormGroup, FormControl, Button, Well } from 'react-bootstrap'
+import { Alert, Col, Form, FormGroup, FormControl, Button, Well } from 'react-bootstrap'
 import FontAwesome from 'react-fontawesome'
 
 import { fetchLoginRequest } from '../action'
@@ -53,9 +54,21 @@ class LoginPage extends React.Component {
                 onClick={this.handleLogIn}>Log In</Button>
         )
 
+        const errorBlock = error ? (
+            <FormGroup>
+                <Col
+                    smOffset={3}
+                    sm={6}>
+                    <Alert bsStyle="danger">
+                        <strong>{error.code}</strong> {error.message}
+                    </Alert>
+                </Col>
+            </FormGroup>
+        ) : null
+
         return (
             <Well>
-                <Form horizontal>
+                <Form horizontal={true}>
                     <FormGroup controlId="username">
                         <Col
                             sm={2}
@@ -89,14 +102,22 @@ class LoginPage extends React.Component {
                             smOffset={5}
                             sm={4}>
                             {btn}
-                            <br />
-                            {error}
                         </Col>
                     </FormGroup>
+
+                    {errorBlock}
                 </Form>
             </Well>
         )
     }
+}
+
+LoginPage.propTypes = {
+    history: PropTypes.object,
+    dispatch: PropTypes.func,
+    fetching: PropTypes.bool,
+    token: PropTypes.string,
+    error: PropTypes.object,
 }
 
 const mapStateToProps = (state) => {
