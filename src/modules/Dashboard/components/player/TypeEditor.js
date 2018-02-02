@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 class TypeEditor extends React.Component {
     constructor (props) {
         super(props)
-        this.updateData = this.updateData.bind(this)
+        this.handleUpdateData = this.handleUpdateData.bind(this)
         this.state = {
             open: true,
             classic: props.defaultValue.classic,
@@ -13,7 +13,7 @@ class TypeEditor extends React.Component {
         }
     }
 
-    updateData () {
+    handleUpdateData () {
         const { classic, jnj, beg } = this.state
 
         this.props.onUpdate({
@@ -23,7 +23,7 @@ class TypeEditor extends React.Component {
         })
     }
 
-    close = () => {
+    handleClose = () => {
         this.setState({ open: false })
         this.props.onUpdate(this.props.defaultValue)
     }
@@ -35,7 +35,11 @@ class TypeEditor extends React.Component {
         const { classic, jnj, beg } = this.state
 
         return (
-            <div className={`modal fade ${fadeIn}`} id="myModal" role="dialog" style={{display}}>
+            <div
+                className={`modal fade ${fadeIn}`}
+                id="myModal"
+                role="dialog"
+                style={{ display }}>
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-body">
@@ -48,7 +52,9 @@ class TypeEditor extends React.Component {
                                     style={{
                                         verticalAlign: 'top',
                                     }}
-                                    onChange={e => { this.setState({[e.currentTarget.value]: e.currentTarget.checked}) }} />
+                                    onChange={e => {
+                                        this.setState({ [e.currentTarget.value]: e.currentTarget.checked })
+                                    }} />
                                 {' '}Classic
                             </label>
                             <br />
@@ -61,7 +67,9 @@ class TypeEditor extends React.Component {
                                     style={{
                                         verticalAlign: 'top',
                                     }}
-                                    onChange={e => { this.setState({[e.currentTarget.value]: e.currentTarget.checked}) }} />
+                                    onChange={e => {
+                                        this.setState({ [e.currentTarget.value]: e.currentTarget.checked })
+                                    }} />
                                 {' '}JnJ
                             </label>
                             <br />
@@ -74,13 +82,21 @@ class TypeEditor extends React.Component {
                                     style={{
                                         verticalAlign: 'top',
                                     }}
-                                    onChange={e => { this.setState({[e.currentTarget.value]: e.currentTarget.checked}) }} />
+                                    onChange={e => {
+                                        this.setState({ [e.currentTarget.value]: e.currentTarget.checked })
+                                    }} />
                                 {' '}Beg
                             </label>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-primary" onClick={this.updateData}>Save</button>
-                            <button type="button" className="btn btn-default" onClick={this.close}>Close</button>
+                            <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={this.handleUpdateData}>Save</button>
+                            <button
+                                type="button"
+                                className="btn btn-default"
+                                onClick={this.handleClose}>Close</button>
                         </div>
                     </div>
                 </div>

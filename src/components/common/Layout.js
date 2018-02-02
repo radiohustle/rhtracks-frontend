@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Grid } from 'react-bootstrap'
 
 const Layout = ({ children }) => {
@@ -9,6 +10,10 @@ const Layout = ({ children }) => {
             </Grid>
         </div>
     )
+}
+
+Layout.propTypes = {
+    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 }
 
 export default Layout

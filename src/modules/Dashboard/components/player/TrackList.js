@@ -22,7 +22,6 @@ const afterDeleteRow = ({ dispatch }) => rowKyes => {
 }
 
 const beforeSaveCell = () => (row, cellName, cellValue) => {
-
     if (cellName === 'bpm') {
         cellValue = +cellValue
 
