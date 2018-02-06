@@ -1,6 +1,8 @@
 import { NotificationManager } from 'react-notifications'
 
 import {
+    FETCH_CREATE_TRACK_FAILED,
+    FETCH_CREATE_TRACK_REQUEST, FETCH_CREATE_TRACK_SUCCESS,
     FETCH_DELETE_TRACK_FAILED, FETCH_DELETE_TRACK_REQUEST,
     FETCH_DELETE_TRACK_SUCCESS,
     FETCH_TRACKS_FAILED,
@@ -14,6 +16,7 @@ const initialState = {
     error: null,
     tracks: [],
     fetchingUpdate: false,
+    fetchingCreate: false,
     fetchingDelete: false,
 }
 
@@ -77,6 +80,37 @@ const tracksReducer = (state = initialState, action) => {
             ...state,
             error,
             fetchingUpdate: false,
+        }
+    }
+
+    // Create track
+
+    if (action.type === FETCH_CREATE_TRACK_REQUEST) {
+        return {
+            ...state,
+            fetchingCreate: true,
+        }
+    }
+
+    if (action.type === FETCH_CREATE_TRACK_SUCCESS) {
+        NotificationManager.success('Track is created')
+
+        return {
+            ...state,
+            error: null,
+            fetchingCreate: false,
+        }
+    }
+
+    if (action.type === FETCH_CREATE_TRACK_FAILED) {
+        const error = action.payload
+
+        NotificationManager.error(`${error.code} ${error.message}: can not create track`)
+
+        return {
+            ...state,
+            error,
+            fetchingCreate: false,
         }
     }
 

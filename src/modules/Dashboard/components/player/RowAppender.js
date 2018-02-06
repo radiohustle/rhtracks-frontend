@@ -1,38 +1,52 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Modal, Form, FormGroup, FormControl, ControlLabel, Checkbox, ButtonGroup, Button } from 'react-bootstrap'
+import { Modal, Form, FormGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap'
 
 import FontAwesome from 'react-fontawesome'
 
 import {
-    updateTrackRequest,
-    deleteTrackRequest,
+    createTrackRequest,
 } from '../../action'
 
-class RowEditor extends React.Component {
+class RowAppender extends React.Component {
     constructor (props) {
         super(props)
 
-        const { row } = props
-
         this.state = {
-            row,
-            isDeleting: false,
+            row: {
+                id: null,
+                name: '',
+                src: '',
+                bpm: '',
+                type: {
+                    classic: false,
+                    jnj: false,
+                    beg: false,
+                },
+            },
         }
     }
 
     handleShow = () => {
-        const { row } = this.props
-
         this.setState({
-            row,
-            isDeleting: false,
+            row: {
+                id: null,
+                name: '',
+                src: '',
+                bpm: '',
+                type: {
+                    classic: false,
+                    jnj: false,
+                    beg: false,
+                },
+            },
         })
     }
 
     handleChange = e => {
-        const { id, value, type } = e.target
+        const { id, type } = e.target
+        let { value } = e.target
         const { row } = this.state
 
         if (type === 'checkbox') {
@@ -40,6 +54,9 @@ class RowEditor extends React.Component {
 
             row.type[id] = checked ? 1 : 0
         } else {
+            if (id === 'bpm') {
+                value = value.replace(/\D/g, '')
+            }
             row[id] = value
         }
 
@@ -48,10 +65,11 @@ class RowEditor extends React.Component {
         })
     }
 
-    handleSave (row) {
+    handleAdd() {
+        const { row } = this.state
         const { dispatch, onClose } = this.props
 
-        dispatch(updateTrackRequest({
+        dispatch(createTrackRequest({
             id: row.id,
             name: row.name,
             src: row.src,
@@ -59,61 +77,24 @@ class RowEditor extends React.Component {
             classic: row.type.classic ? 1 : 0,
             jnj: row.type.jnj ? 1 : 0,
             beg: row.type.beg ? 1 : 0,
-        }, () => {
-            onClose(row, 'update')
+        }, res => {
+            onClose({
+                id: res.id,
+                name: res.name,
+                src: res.src,
+                bpm: res.bpm,
+                type: {
+                    classic: res.classic,
+                    jnj: res.jnj,
+                    beg: res.beg,
+                },
+            }, 'create')
         }))
     }
 
-    handleDelete = () => {
-        this.setState({
-            isDeleting: true,
-        })
-    }
-
-    handleSureDelete (row) {
-        const { dispatch, onClose } = this.props
-
-        dispatch(deleteTrackRequest(row.id, () => {
-            onClose(row, 'delete')
-        }))
-    }
-
-    render () {
-        const { row, isDeleting } = this.state
+    render() {
+        const { row } = this.state
         const { fetching, open, onClose } = this.props
-
-        const deleteBtn = isDeleting ? (
-            <ButtonGroup
-                style={{
-                    float: 'left',
-                }}>
-                <Button
-                    bsStyle="danger"
-                    disabled={fetching}
-                    onClick={this.handleSureDelete.bind(this, row)}>
-                    I want to delete
-                </Button>
-                <Button
-                    disabled={fetching}
-                    onClick={() => {
-                        this.setState({
-                            isDeleting: false,
-                        })
-                    }}>
-                    Cancel
-                </Button>
-            </ButtonGroup>
-        ) : (
-            <Button
-                bsStyle="danger"
-                disabled={fetching}
-                onClick={this.handleDelete.bind(this, row)}
-                style={{
-                    float: 'left',
-                }}>
-                Delete
-            </Button>
-        )
 
         return (
             <Modal
@@ -126,11 +107,15 @@ class RowEditor extends React.Component {
                             <FontAwesome
                                 name="cog"
                                 spin={true} />
-                        ) : null} Edit track ID: {row.id}</Modal.Title>
+                        ) : null} Add new track</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
                         {Object.keys(row).map((key, i) => {
+                            if (key === 'id') {
+                                return null
+                            }
+
                             if (key === 'type') {
                                 return (
                                     <FormGroup
@@ -139,25 +124,23 @@ class RowEditor extends React.Component {
                                         <Checkbox
                                             id="classic"
                                             inline={true}
-                                            checked={!!row.type.classic}
+                                            checked={row.type.classic}
                                             onChange={this.handleChange}>classic</Checkbox>
                                         {' '}
                                         <Checkbox
                                             id="jnj"
                                             inline={true}
-                                            checked={!!row.type.jnj}
+                                            checked={row.type.jnj}
                                             onChange={this.handleChange}>jnj</Checkbox>
                                         {' '}
                                         <Checkbox
                                             id="beg"
                                             inline={true}
-                                            checked={!!row.type.beg}
+                                            checked={row.type.beg}
                                             onChange={this.handleChange}>beg</Checkbox>
                                     </FormGroup>
                                 )
                             }
-
-                            const readOnly = key === 'id'
 
                             return (
                                 <FormGroup
@@ -166,7 +149,6 @@ class RowEditor extends React.Component {
                                     <ControlLabel>{key}</ControlLabel>
                                     <FormControl
                                         type="text"
-                                        readOnly={readOnly}
                                         value={row[key]}
                                         onChange={this.handleChange} />
                                 </FormGroup>
@@ -175,12 +157,11 @@ class RowEditor extends React.Component {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    {deleteBtn}
                     <Button
                         bsStyle="success"
                         disabled={fetching}
-                        onClick={this.handleSave.bind(this, row)}>
-                        Save
+                        onClick={this.handleAdd.bind(this, row)}>
+                        Add
                     </Button>
                     <Button
                         disabled={fetching}
@@ -194,12 +175,9 @@ class RowEditor extends React.Component {
 }
 
 const mapStateToProps = state => {
-    console.log('mapStateToProps', state)
-    console.log('fetching', state.player.fetchingUpdate || state.player.fetchingDelete)
-
     return {
-        fetching: state.player.fetchingUpdate || state.player.fetchingDelete,
+        fetching: state.player.fetchingCreate,
     }
 }
 
-export default connect(mapStateToProps)(RowEditor)
+export default connect(mapStateToProps)(RowAppender)

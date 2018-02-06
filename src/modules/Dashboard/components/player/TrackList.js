@@ -2,7 +2,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { NotificationManager } from 'react-notifications'
 
 import { Button } from 'react-bootstrap'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
@@ -10,36 +9,12 @@ import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css'
 
 import FontAwesome from 'react-fontawesome'
 
-import BpmEditor from './BpmEditor'
-import TypeEditor from './TypeEditor'
+import RowAppender from './RowAppender'
 import RowEditor from './RowEditor'
 
 import {
     fetchTracksRequest,
-    deleteTrackRequest,
 } from '../../action'
-
-const afterDeleteRow = ({ dispatch }) => rowKyes => {
-
-}
-
-const beforeSaveCell = () => (row, cellName, cellValue) => {
-    if (cellName === 'bpm') {
-        cellValue = +cellValue
-
-        if (isNaN(cellValue)) {
-            NotificationManager.error('bpm value must be integer!')
-
-            return false
-        }
-    }
-
-    return true
-}
-
-const afterSaveCell = ({ dispatch }) => row => {
-
-}
 
 const typeFormatter = (cell) => {
     cell = cell || {}
@@ -65,18 +40,6 @@ const typeFormatter = (cell) => {
     return result.join('')
 }
 
-const createBpmEditor = (onUpdate, props) => (
-    <BpmEditor
-        onUpdate={onUpdate}
-        {...props} />
-)
-
-const createTypeEditor = (onUpdate, props) => (
-    <TypeEditor
-        onUpdate={onUpdate}
-        {...props} />
-)
-
 class TrackList extends React.Component {
     constructor(props) {
         super(props)
@@ -84,6 +47,7 @@ class TrackList extends React.Component {
         this.state = {
             data: [],
             showModalEditor: false,
+            showModalAppender: false,
             currentRow: {},
         }
     }
@@ -110,6 +74,17 @@ class TrackList extends React.Component {
 
     componentWillMount() {
         this.refreshTable()
+    }
+
+    handleCloseModalAppender(row) {
+        const { data } = this.state
+
+        data.push(row)
+
+        this.setState({
+            data,
+            showModalAppender: false,
+        })
     }
 
     handleCloseModalEditor(row, method) {
@@ -150,6 +125,7 @@ class TrackList extends React.Component {
         const {
             data,
             showModalEditor,
+            showModalAppender,
             currentRow,
         } = this.state
 
@@ -182,6 +158,20 @@ class TrackList extends React.Component {
 
                 buttons.push(
                     <Button
+                        key="handleAddTrack"
+                        type="button"
+                        bsStyle="warning"
+                        onClick={() => {
+                            this.setState({
+                                showModalAppender: true,
+                            })
+                        }}>
+                        <FontAwesome name="plus" /> Add
+                    </Button>
+                )
+
+                buttons.push(
+                    <Button
                         key="handleClickRefreshButton"
                         type="button"
                         onClick={this.handleClickRefreshButton}>
@@ -191,7 +181,7 @@ class TrackList extends React.Component {
 
                 return buttons
             },
-            onRowDoubleClick: (row, e) => {
+            onRowDoubleClick: row => {
                 this.setState({
                     showModalEditor: true,
                     currentRow: row,
@@ -201,6 +191,9 @@ class TrackList extends React.Component {
 
         return (
             <div>
+                <RowAppender
+                    open={showModalAppender}
+                    onClose={this.handleCloseModalAppender.bind(this)} />
                 <RowEditor
                     open={showModalEditor}
                     row={currentRow}
@@ -212,8 +205,7 @@ class TrackList extends React.Component {
                     exportCSV={true}
                     csvFileName="rh-player-tracks.csv"
                     striped={true}
-                    search={true}
-                    insertRow={true}>
+                    search={true}>
                     <TableHeaderColumn
                         isKey={true}
                         dataField="id"
