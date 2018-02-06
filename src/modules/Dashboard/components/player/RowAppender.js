@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { Modal, Form, FormGroup, FormControl, ControlLabel, Checkbox, Button } from 'react-bootstrap'
@@ -172,6 +173,13 @@ class RowAppender extends React.Component {
             </Modal>
         )
     }
+}
+
+RowAppender.propTypes = {
+    dispatch: PropTypes.func,
+    fetching: PropTypes.bool,
+    open: PropTypes.bool,
+    onClose: PropTypes.func,
 }
 
 const mapStateToProps = state => {

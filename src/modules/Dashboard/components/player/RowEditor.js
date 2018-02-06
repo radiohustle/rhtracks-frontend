@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { Modal, Form, FormGroup, FormControl, ControlLabel, Checkbox, ButtonGroup, Button } from 'react-bootstrap'
@@ -139,19 +140,19 @@ class RowEditor extends React.Component {
                                         <Checkbox
                                             id="classic"
                                             inline={true}
-                                            checked={!!row.type.classic}
+                                            checked={row.type.classic}
                                             onChange={this.handleChange}>classic</Checkbox>
                                         {' '}
                                         <Checkbox
                                             id="jnj"
                                             inline={true}
-                                            checked={!!row.type.jnj}
+                                            checked={row.type.jnj}
                                             onChange={this.handleChange}>jnj</Checkbox>
                                         {' '}
                                         <Checkbox
                                             id="beg"
                                             inline={true}
-                                            checked={!!row.type.beg}
+                                            checked={row.type.beg}
                                             onChange={this.handleChange}>beg</Checkbox>
                                     </FormGroup>
                                 )
@@ -193,10 +194,15 @@ class RowEditor extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    console.log('mapStateToProps', state)
-    console.log('fetching', state.player.fetchingUpdate || state.player.fetchingDelete)
+RowEditor.propTypes = {
+    dispatch: PropTypes.func,
+    fetching: PropTypes.bool,
+    open: PropTypes.bool,
+    row: PropTypes.object,
+    onClose: PropTypes.func,
+}
 
+const mapStateToProps = state => {
     return {
         fetching: state.player.fetchingUpdate || state.player.fetchingDelete,
     }
