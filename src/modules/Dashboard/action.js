@@ -42,7 +42,7 @@ export const fetchTracksRequest = () => {
     }
 }
 
-export const updateTrackRequest = track => {
+export const updateTrackRequest = (track, onFulfiled = () => {}, onReject = () => {}) => {
     return dispatch => {
         dispatch({
             type: FETCH_UPDATE_TRACK_REQUEST,
@@ -66,18 +66,24 @@ export const updateTrackRequest = track => {
 
                 return r.json()
             })
-            .then(res => dispatch({
-                type: FETCH_UPDATE_TRACK_SUCCESS,
-                payload: res,
-            }))
-            .catch(e => dispatch({
-                type: FETCH_UPDATE_TRACK_FAILED,
-                payload: e,
-            }))
+            .then(res => {
+                onFulfiled()
+                dispatch({
+                    type: FETCH_UPDATE_TRACK_SUCCESS,
+                    payload: res,
+                })
+            })
+            .catch(e => {
+                onReject()
+                dispatch({
+                    type: FETCH_UPDATE_TRACK_FAILED,
+                    payload: e,
+                })
+            })
     }
 }
 
-export const deleteTrackRequest = id => {
+export const deleteTrackRequest = (id, onFulfiled = () => {}, onReject = () => {}) => {
     return dispatch => {
         dispatch({
             type: FETCH_DELETE_TRACK_REQUEST,
@@ -98,13 +104,19 @@ export const deleteTrackRequest = id => {
 
                 return r.json()
             })
-            .then(res => dispatch({
-                type: FETCH_DELETE_TRACK_SUCCESS,
-                payload: res,
-            }))
-            .catch(e => dispatch({
-                type: FETCH_DELETE_TRACK_FAILED,
-                payload: e,
-            }))
+            .then(res => {
+                onFulfiled()
+                dispatch({
+                    type: FETCH_DELETE_TRACK_SUCCESS,
+                    payload: res,
+                })
+            })
+            .catch(e => {
+                onReject()
+                dispatch({
+                    type: FETCH_DELETE_TRACK_FAILED,
+                    payload: e,
+                })
+            })
     }
 }

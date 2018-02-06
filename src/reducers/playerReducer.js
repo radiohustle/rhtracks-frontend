@@ -1,11 +1,11 @@
 import { NotificationManager } from 'react-notifications'
 
 import {
-    FETCH_DELETE_TRACK_FAILED,
+    FETCH_DELETE_TRACK_FAILED, FETCH_DELETE_TRACK_REQUEST,
     FETCH_DELETE_TRACK_SUCCESS,
     FETCH_TRACKS_FAILED,
     FETCH_TRACKS_REQUEST,
-    FETCH_TRACKS_SUCCESS, FETCH_UPDATE_TRACK_FAILED,
+    FETCH_TRACKS_SUCCESS, FETCH_UPDATE_TRACK_FAILED, FETCH_UPDATE_TRACK_REQUEST,
     FETCH_UPDATE_TRACK_SUCCESS,
 } from '../modules/Dashboard/const'
 
@@ -13,6 +13,8 @@ const initialState = {
     fetching: false,
     error: null,
     tracks: [],
+    fetchingUpdate: false,
+    fetchingDelete: false,
 }
 
 const tracksReducer = (state = initialState, action) => {
@@ -49,12 +51,20 @@ const tracksReducer = (state = initialState, action) => {
 
     // Update track
 
+    if (action.type === FETCH_UPDATE_TRACK_REQUEST) {
+        return {
+            ...state,
+            fetchingUpdate: true,
+        }
+    }
+
     if (action.type === FETCH_UPDATE_TRACK_SUCCESS) {
         NotificationManager.success('Track is saved')
 
         return {
             ...state,
             error: null,
+            fetchingUpdate: false,
         }
     }
 
@@ -65,11 +75,19 @@ const tracksReducer = (state = initialState, action) => {
 
         return {
             ...state,
-            error: action.payload,
+            error,
+            fetchingUpdate: false,
         }
     }
 
     // Delete track
+
+    if (action.type === FETCH_DELETE_TRACK_REQUEST) {
+        return {
+            ...state,
+            fetchingDelete: true,
+        }
+    }
 
     if (action.type === FETCH_DELETE_TRACK_SUCCESS) {
         NotificationManager.success('Track is deleted')
@@ -77,6 +95,7 @@ const tracksReducer = (state = initialState, action) => {
         return {
             ...state,
             error: null,
+            fetchingDelete: false,
         }
     }
 
@@ -88,6 +107,7 @@ const tracksReducer = (state = initialState, action) => {
         return {
             ...state,
             error,
+            fetchingDelete: false,
         }
     }
 
