@@ -9,7 +9,7 @@ import {
     FETCH_TRACKS_REQUEST,
     FETCH_TRACKS_SUCCESS, FETCH_UPDATE_TRACK_FAILED, FETCH_UPDATE_TRACK_REQUEST,
     FETCH_UPDATE_TRACK_SUCCESS,
-} from '../modules/Dashboard/const'
+} from '../consts/playerConsts'
 
 const initialState = {
     fetching: false,

@@ -8,7 +8,7 @@ import FontAwesome from 'react-fontawesome'
 
 import {
     createTrackRequest,
-} from '../../action'
+} from '../../actions/playerActions'
 
 class RowAppender extends React.Component {
     constructor (props) {

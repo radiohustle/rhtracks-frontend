@@ -13,15 +13,22 @@ const Home = (props) => {
     if (roles.indexOf('ROLE_ADMIN') > -1) {
         wells.push(
             <BoardWell
-                key={0}
+                key="admin_boardwell"
                 to="/"
                 title="Only admin can see this block" />
+        )
+
+        wells.push(
+            <BoardWell
+                key="custom"
+                to="/dashboard/custom"
+                title="Custom Data" />
         )
     }
 
     wells.push(
         <BoardWell
-            key={1}
+            key="player"
             to="/dashboard/player"
             title="Player" />
     )

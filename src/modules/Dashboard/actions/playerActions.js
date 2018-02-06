@@ -13,7 +13,7 @@ import {
     FETCH_CREATE_TRACK_REQUEST,
     FETCH_CREATE_TRACK_SUCCESS,
     FETCH_CREATE_TRACK_FAILED,
-} from './const'
+} from '../consts/playerConsts'
 
 export const fetchTracksRequest = () => {
     return dispatch => {

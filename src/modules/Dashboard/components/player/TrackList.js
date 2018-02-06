@@ -14,7 +14,7 @@ import RowEditor from './RowEditor'
 
 import {
     fetchTracksRequest,
-} from '../../action'
+} from '../../actions/playerActions'
 
 const typeFormatter = (cell) => {
     cell = cell || {}
