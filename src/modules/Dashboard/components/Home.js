@@ -21,8 +21,8 @@ const Home = (props) => {
         wells.push(
             <BoardWell
                 key="custom"
-                to="/dashboard/custom"
-                title="Custom Data" />
+                to="/dashboard/additional_dancers_info"
+                title="Additional Dancers Info" />
         )
     }
 

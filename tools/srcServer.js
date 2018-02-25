@@ -17,7 +17,7 @@ const bundler = webpack(config);
 
 const apiProxy = proxy('/api', { target: 'http://localhost:9000' })
 const playerProxy = proxy('/player', { target: 'http://localhost:9000' })
-const customDataProxy = proxy('/custom', { target: 'http://localhost:9000' })
+const customDataProxy = proxy('/db', { target: 'http://localhost:9000' })
 
 // Run Browsersync and use middleware for Hot Module Replacement
 browserSync({

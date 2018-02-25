@@ -5,7 +5,7 @@ import {
     Tab,
 } from 'react-bootstrap'
 
-import LatestUpdate from './LatestUpdate'
+import ConfigJson from './ConfigJson'
 import DancerPics from './DancerPics'
 
 const Config = () => {
@@ -15,15 +15,9 @@ const Config = () => {
             defaultActiveKey={1}>
             <Tab
                 eventKey={1}
-                title="Latest Update">
+                title="Config JSON">
                 <br />
-                <LatestUpdate />
-            </Tab>
-            <Tab
-                eventKey={2}
-                title="Pics">
-                <br />
-                <DancerPics />
+                <ConfigJson />
             </Tab>
         </Tabs>
     )

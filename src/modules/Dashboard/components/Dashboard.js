@@ -6,7 +6,7 @@ import { Grid } from 'react-bootstrap'
 import Navigation from './Navigation'
 import Home from './Home'
 import Player from './player/Player'
-import CustomData from './customData/CustomData'
+import AdditionalDancersInfo from './additionalDancersInfo/AdditionalDancersInfo'
 
 const Dashboard = () => {
     return (
@@ -21,8 +21,8 @@ const Dashboard = () => {
                     path="/dashboard/player"
                     component={Player} />
                 <Route
-                    path="/dashboard/custom"
-                    component={CustomData} />
+                    path="/dashboard/additional_dancers_info"
+                    component={AdditionalDancersInfo} />
             </Switch>
         </Grid>
     )
