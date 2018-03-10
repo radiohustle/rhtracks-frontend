@@ -24,6 +24,13 @@ const Home = (props) => {
                 to="/dashboard/additional_dancers_info"
                 title="Additional Dancers Info" />
         )
+
+        wells.push(
+            <BoardWell
+                key="test_page"
+                title="Test upload"
+                to="/dashboard/test" />
+        )
     }
 
     wells.push(

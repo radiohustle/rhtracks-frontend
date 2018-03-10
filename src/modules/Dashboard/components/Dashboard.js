@@ -7,6 +7,7 @@ import Navigation from './Navigation'
 import Home from './Home'
 import Player from './player/Player'
 import AdditionalDancersInfo from './additionalDancersInfo/AdditionalDancersInfo'
+import TestPage from './test/TestPage'
 
 const Dashboard = () => {
     return (
@@ -23,6 +24,9 @@ const Dashboard = () => {
                 <Route
                     path="/dashboard/additional_dancers_info"
                     component={AdditionalDancersInfo} />
+                <Route
+                    path="/dashboard/test"
+                    component={TestPage} />
             </Switch>
         </Grid>
     )
