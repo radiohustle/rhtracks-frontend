@@ -9,7 +9,7 @@ import FontAwesome from 'react-fontawesome'
 import {
     updateTrackRequest,
     deleteTrackRequest,
-} from '../../action'
+} from '../../actions/playerActions'
 
 class RowEditor extends React.Component {
     constructor (props) {
