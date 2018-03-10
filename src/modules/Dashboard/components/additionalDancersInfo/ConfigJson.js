@@ -14,8 +14,6 @@ class ConfigJson extends React.Component {
     constructor(props) {
         super(props)
 
-        const { data } = props
-
         this.state = {
             date: null,
             contests: [],
@@ -62,16 +60,67 @@ class ConfigJson extends React.Component {
         })
     }
 
+    handleChangeContest = (prop, key, e) => {
+        const { json } = this.state
+        const { lastCompetition } = json
+        const { contests } = lastCompetition
+
+        const currentContest = contests[key]
+
+        currentContest[prop] = e.target.value
+
+        contests[key] = currentContest
+        lastCompetition.contests = contests
+        json.lastCompetition = lastCompetition
+
+        this.setState({
+            json,
+        })
+    }
+
+    handleChangePics = e => {
+        const { json } = this.state
+
+        try {
+            json.pics = JSON.parse(e.target.value)
+
+            this.setState(json)
+        } catch (_) {
+            // eslint-disable-next-line no-alert
+            alert('error parsing json')
+        }
+    }
+
+    handleChangeLinks = e => {
+        const { json } = this.state
+
+        try {
+            json.links = JSON.parse(e.target.value)
+
+            this.setState(json)
+        } catch (_) {
+            // eslint-disable-next-line no-alert
+            alert('error parsing json')
+        }
+    }
+
+    handleChangeClubs = e => {
+        const { json } = this.state
+
+        try {
+            json.clubs = JSON.parse(e.target.value)
+
+            this.setState(json)
+        } catch (_) {
+            // eslint-disable-next-line no-alert
+            alert('error parsing json')
+        }
+    }
+
     handleDeleteContest = index => {
         const { json } = this.state
 
         let { lastCompetition: { contests } } = json
-
-        console.log(contests.filter((_, i) => {
-            console.log(i, index)
-
-            return i !== index
-        }))
 
         contests = contests.filter((_, i) => i !== index)
 
@@ -87,8 +136,6 @@ class ConfigJson extends React.Component {
         const { dispatch } = this.props
 
         dispatch(fetchSaveAdditionalDancersInfo(json))
-
-        console.log(json)
     }
 
     handleRefresh = () => {
@@ -101,7 +148,7 @@ class ConfigJson extends React.Component {
         const { json, valid } = this.state
         const { fetching } = this.props
 
-        const { lastCompetition: { date, contests }, pics, links } = json
+        const { lastCompetition: { date, contests }, pics, links, clubs } = json
 
         if (fetching) {
             return (
@@ -160,12 +207,14 @@ class ConfigJson extends React.Component {
                                     <FormGroup controlId={`contest_${e.name}`}>
                                         <ControlLabel>name</ControlLabel>
                                         <FormControl
-                                            defaultValue={e.name} />
+                                            defaultValue={e.name}
+                                            onBlur={this.handleChangeContest.bind(this, 'name', i)} />
                                     </FormGroup>
                                     <FormGroup controlId={`contest_${e.link}`}>
                                         <ControlLabel>link</ControlLabel>
                                         <FormControl
-                                            defaultValue={e.link} />
+                                            defaultValue={e.link}
+                                            onBlur={this.handleChangeContest.bind(this, 'link', i)} />
                                     </FormGroup>
                                     <Button
                                         bsStyle="danger"
@@ -176,6 +225,56 @@ class ConfigJson extends React.Component {
                             </Col>
                         )
                     })}
+                </Row>
+                <Row>
+                    <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        xs={12}>
+                        <Well>
+                            <FormGroup controlId="pics">
+                                <ControlLabel>Pics</ControlLabel>
+                                <FormControl
+                                    componentClass="textarea"
+                                    rows={10}
+                                    defaultValue={JSON.stringify(pics, null, 4)}
+                                    onBlur={this.handleChangePics} />
+                            </FormGroup>
+                        </Well>
+                    </Col>
+                    <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        xs={12}>
+                        <Well>
+                            <FormGroup controlId="links">
+                                <ControlLabel>Links</ControlLabel>
+                                <FormControl
+                                    componentClass="textarea"
+                                    rows={10}
+                                    defaultValue={JSON.stringify(links, null, 4)}
+                                    onBlur={this.handleChangeLinks} />
+                            </FormGroup>
+                        </Well>
+                    </Col>
+                    <Col
+                        lg={6}
+                        md={6}
+                        sm={12}
+                        xs={12}>
+                        <Well>
+                            <FormGroup controlId="clubs">
+                                <ControlLabel>Clubs</ControlLabel>
+                                <FormControl
+                                    componentClass="textarea"
+                                    rows={10}
+                                    defaultValue={JSON.stringify(clubs, null, 4)}
+                                    onBlur={this.handleChangeClubs} />
+                            </FormGroup>
+                        </Well>
+                    </Col>
                 </Row>
                 <Row>
                     <Col

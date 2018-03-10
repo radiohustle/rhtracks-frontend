@@ -49,7 +49,13 @@ export const fetchSaveAdditionalDancersInfo = json => {
             type: FETCH_SAVE_ADDITIONAL_DANCERS_INFO_REQUEST,
         })
 
-        return fetch('/custom/save/')
+        return fetch('/db/set_dancers_config/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain; charset=utf-8',
+            },
+            body: JSON.stringify({ dancers_config: JSON.stringify(json) }),
+        })
             .then(r => {
                 console.log(r.status)
                 if (r.status !== 200) {

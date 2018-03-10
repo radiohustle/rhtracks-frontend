@@ -9,6 +9,8 @@ import {
     FETCH_SAVE_ADDITIONAL_DANCERS_INFO_FAILED,
 } from '../consts/additionalDancersInfoConsts'
 
+const deepCopy = object => JSON.parse(JSON.stringify(object))
+
 const initialState = {
     error: null,
     fetchingData: false,
@@ -40,7 +42,7 @@ const configReducer = (state = initialState, action) => {
     if (action.type === FETCH_LAST_COMPETITIONS_FAILED) {
         const error = action.payload
 
-        NotificationManager.error(`${error.code} ${error.message}: can not load last competitions`)
+        NotificationManager.error(`${error.code} ${error.message}: can not load additional dancers info`)
 
         return {
             ...state,
@@ -57,9 +59,9 @@ const configReducer = (state = initialState, action) => {
     }
 
     if (action.type === FETCH_SAVE_ADDITIONAL_DANCERS_INFO_SUCCESS) {
-        return {
-            ...state,
-        }
+        NotificationManager.success('Saved additional dancers info')
+
+        return deepCopy(state)
     }
 
     if (action.type === FETCH_SAVE_ADDITIONAL_DANCERS_INFO_FAILED) {
