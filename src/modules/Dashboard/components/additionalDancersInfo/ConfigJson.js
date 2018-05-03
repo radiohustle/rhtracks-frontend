@@ -17,7 +17,13 @@ class ConfigJson extends React.Component {
         this.state = {
             date: null,
             contests: [],
-            json: {},
+            json: {
+                lastCompetition: {
+                    contests: [],
+                    pics: [],
+                    links: {},
+                },
+            },
             valid: true,
         }
     }
